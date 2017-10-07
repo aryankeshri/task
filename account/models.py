@@ -84,3 +84,14 @@ class TaskUser(models.Model):
 
     def name(self):
         return str.title(self.full_name)
+
+
+class Token(models.Model):
+    uid = models.BigIntegerField(unique=True)
+    token = models.CharField(max_length=32)
+    status = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True, auto_now=False)
+    modified = models.DateTimeField(auto_now_add=False, auto_now=True)
+
+    def __str__(self):
+        return str(self.uid)
