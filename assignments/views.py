@@ -113,3 +113,15 @@ class TaskView(viewsets.ModelViewSet):
                 assign_obj.status = 'done'
                 assign_obj.save()
         return Response({'message': 'status changes!'}, status=status.HTTP_200_OK)
+
+    def task_details(self, request, pk=None):
+        user_perm = has_permission(request)
+        task_obj = get_object_or_404(Task, id=pk, active=True)
+        task_response = TaskSerializer(task_obj)
+        assign_objs = TaskAssignUser.objects.filter(task=task_obj, active=True)
+        assign_response = TaskAssignUserSerializer(assign_objs, many=True)
+        context = {
+            'task': task_response.data,
+            'assign': assign_response.data
+        }
+        return Response(context, status=status.HTTP_200_OK)
