@@ -34,23 +34,22 @@ class TaskView(viewsets.ModelViewSet):
         :return: response
         """
         user_perm = has_permission(request)
-        if user_perm.role == (1 or 2):
+        if user_perm.role == 1 or user_perm.role == 2:
             task_obj = Task.objects.create(question=request.data['question'],
-                                           created_by=user_perm.id
+                                           created_by=user_perm
                                            )
             for assign in request.data['assign_user']:
                 try:
                     ex_user = TaskUser.objects.get(email__iexact=assign['email'])
                 except ObjectDoesNotExist:
                     ex_user = None
-                if ex_user.role == 3 or ex_user is None:
-                    ag_obj = TaskAssignUser.objects.create(
-                        user=ex_user,
-                        user_email=assign['email'].lower(),
-                        task=task_obj
-                    )
+                ag_obj = TaskAssignUser.objects.create(
+                    user=ex_user,
+                    user_email=assign['email'].lower(),
+                    task=task_obj
+                )
 
-            assign_user = TaskAssignUser.objects.filter(task=task_obj, active=Task)
+            assign_user = TaskAssignUser.objects.filter(task=task_obj, active=True)
             assign_serialiser = TaskAssignUserSerializer(assign_user, many=True)
             context = {
                 'task': TaskSerializer(task_obj).data,
@@ -61,6 +60,32 @@ class TaskView(viewsets.ModelViewSet):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
     def dashboard(self, request):
+        """
+
+        :param request: request according to user type
+        :return: {
+            "data": [
+                {
+                    "question": "How was add two no?",
+                    "status": "to-do",
+                    "created_by": {
+                        "role": 2,
+                        "id": 7,
+                        "email": "teacher1@gmail.com"
+                    }
+                },
+                {
+                    "question": "How was add two no?",
+                    "status": "to-do",
+                    "created_by": {
+                        "role": 2,
+                        "id": 7,
+                        "email": "teacher1@gmail.com"
+                    }
+                }
+            ]
+        }
+        """
         user_perm = has_permission(request)
         if user_perm.role == 1:
             task_obj = Task.objects.filter(active=True)
@@ -101,7 +126,7 @@ class TaskView(viewsets.ModelViewSet):
     def status_change(self, request, pk=None):
         user_perm = has_permission(request)
         assign_obj = get_object_or_404(TaskAssignUser, id=pk, active=True)
-        if user_perm.role == (1 or 2):
+        if user_perm.role == 1 or user_perm.role == 2:
             if assign_obj.status == 'done':
                 assign_obj.status = request.data['status']
                 assign_obj.save()

@@ -22,6 +22,23 @@ from core.encryption import jwt_payload_handler, jwt_encode_handler
 class SignUpView(viewsets.ModelViewSet):
 
     def register(self, request):
+        """
+
+        :param request: email, password, full_name, role
+        :return:
+            {
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjozLCJpZCI6ImdBQUFBQUJaMndRR253M1B0WldfZk4yOXdIVFAyUVU5aUw4YTZ6ZFJ6SVNENTFaWGNocmRfTHNkaFJsS01mclp3akpoLVF6dVUwX0VMOG1aWGhlTWlYQVlqNWpfcFNUY213PT0iLCJlbWFpbCI6InN0dWRlbnRAZ21haWwuY29tIn0.-YaBOFWUk2-Id59Ogak9sF5hK9r8qXh20HTGPFMIeo0",
+            "user": {
+                "id": 5,
+                "email": "student@gmail.com",
+                "name": "Aryan Keshri",
+                "short_name": "Aryan",
+                "last_name": "Keshri",
+                "role": "Student",
+                "email_verifed": false
+            }
+        }
+        """
         email = request.data['email'].lower()
         check = TaskUser.objects.filter(email__iexact=email).exists()
         if check:
@@ -32,7 +49,7 @@ class SignUpView(viewsets.ModelViewSet):
 
         password = request.data['password']
         full_name = str.title(request.data['full_name'])
-        role = request.data['role']
+        role = int(request.data['role'])
         if role == 1:
             role = 1
         elif role == 2:
@@ -61,7 +78,18 @@ class Login(viewsets.ModelViewSet):
         """
         Login the user user with username(email/username), password
         :param request: email, password
-        :return: token, user
+        :return: {
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjozLCJpZCI6ImdBQUFBQUJaMndRR253M1B0WldfZk4yOXdIVFAyUVU5aUw4YTZ6ZFJ6SVNENTFaWGNocmRfTHNkaFJsS01mclp3akpoLVF6dVUwX0VMOG1aWGhlTWlYQVlqNWpfcFNUY213PT0iLCJlbWFpbCI6InN0dWRlbnRAZ21haWwuY29tIn0.-YaBOFWUk2-Id59Ogak9sF5hK9r8qXh20HTGPFMIeo0",
+            "user": {
+                "id": 5,
+                "email": "student@gmail.com",
+                "name": "Aryan Keshri",
+                "short_name": "Aryan",
+                "last_name": "Keshri",
+                "role": "Student",
+                "email_verifed": false
+            }
+        }
         """
         username = request.data['email']
         password = request.data['password']
