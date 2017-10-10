@@ -2,6 +2,7 @@ import base64
 import uuid
 
 from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import render
 from django.utils import timezone
 from django.utils.encoding import force_text, force_bytes
 from django.utils.http import urlsafe_base64_decode
@@ -228,3 +229,7 @@ class Logout(views.APIView):
          'message': 'successfully logout!!'
         }
         return Response(context, status=status.HTTP_200_OK)
+
+
+def html_test(request):
+    return render(request, 'signup.html', {})
