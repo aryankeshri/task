@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^task/details/(?P<pk>[0-9]+)/$',
         TaskView.as_view({'get': 'task_details'})),
     url(r'^task/update/(?P<pk>[0-9]+)/$', TaskView.as_view({'put': 'update_task'})),
+    url(r'^user/data/$', UserDataView.as_view({'get': 'get'})),
 ]

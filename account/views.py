@@ -15,6 +15,7 @@ from django.utils.translation import ugettext as _
 
 from account.models import TaskUser, Token
 from account.serializers import UserResponseSerializer
+from assignments.models import Task
 from core.api_permissions import has_permission
 from core.authentication import is_authenticate
 from core.encryption import jwt_payload_handler, jwt_encode_handler
@@ -232,4 +233,4 @@ class Logout(views.APIView):
 
 
 def html_test(request):
-    return render(request, 'signup.html', {})
+    return render(request, 'chart.html', {})

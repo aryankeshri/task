@@ -202,3 +202,17 @@ class TaskView(viewsets.ModelViewSet):
             'assign': assign_response.data
         }
         return Response(context, status=status.HTTP_200_OK)
+
+
+class UserDataView(viewsets.ModelViewSet):
+    def get(self, request):
+        user_count = TaskUser.objects.using('default').filter(is_active=True).count()
+        task_count = Task.objects.using('default').all().count()
+        task_assigment = TaskAssignUser.objects.using('default').filter(active=True).count()
+        labels = ["User", "Task", "Task Assignment"]
+        default_data = [user_count, task_count, task_assigment]
+        context = {
+            'labels': labels,
+            'default': default_data
+        }
+        return Response(context, status=status.HTTP_200_OK)

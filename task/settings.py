@@ -82,6 +82,8 @@ WSGI_APPLICATION = 'task.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
+DATABASE_ROUTERS = ['task.db_router.PrimaryReplicaRouter']
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -90,7 +92,15 @@ DATABASES = {
         'PASSWORD': '7487de0886608bda34fcbc301a86fdc7ebc82aadcfef5e2b38deb03e4a46f901',
         'HOST': 'ec2-23-21-80-230.compute-1.amazonaws.com',
         'PORT': '5432',
-    }
+    },
+    'test_chart': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'sarvam',
+        'USER': 'sarvam',
+        'PASSWORD': 'sarvam123',
+        'HOST': 'sarvam.cd4jaswmwm71.us-west-2.rds.amazonaws.com',
+        'PORT': '5432',
+    },
 }
 
 
