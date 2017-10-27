@@ -1,43 +1,44 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
-<td style="padding: 55px 70px;" xmlns="http://www.w3.org/1999/html">
-
-</td>
+<div class="login">
+    <div class="container">
+        <div class="header">
+            <h3>Login</h3>
+        </div>
+        <div class="container-form">
+            <form action="" method="post" id="login-form" >{% csrf_token %}
+                <div class="form-row">
+                    <label class="required" for="id_username">Email address:</label>
+                    <input class="form-input" id="id_username" placeholder="xyz@example.com" maxlength="254" name="username" type="text" />
+                </div>
+                <div class="form-row">
+                    <label class="required" for="id_password">Password:</label>
+                    <input class="form-input" id="id_password" name="password" type="password" />
+                </div>
+                <div class="submit-row">
+                    <label>&nbsp;</label>
+                    <input class="btn btn-success" type="submit" value="SIGN IN" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
-    function do_login(){
-        var email=$("#emailid").val();
-        var pass=$("#password").val();
-        if(email!="" && pass!=""){
-            $("#loading_spinner").css({"display":"block"});
-            $.ajax
-            ({
-            type:'post',
-            url:'http://localhost:8000/account/login/',
-            data:{
-            do_login:"do_login",
-            email:email,
-            password:pass
-        },
-      success:function(response) {
-      if(response=="success")
-      {
-        window.location.href="index.php";
-      }
-      else
-      {
-        $("#loading_spinner").css({"display":"none"});
-        alert("Wrong Details");
-      }
-      }
-      });
-     }
-
-     else
-     {
-      alert("Please Fill All The Details");
-     }
-
-     return false;
-    }
+    $(document).on('submit', '#login-form', function(e){
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '/account/api/login/',
+            data: {
+                email: $('#id_username').val(),
+                password: $('#id_password').val(),
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+            },
+            success: function(){
+                alert('login successfuly');
+            }
+        });
+    });
 </script>
 {% endblock content %}

@@ -209,7 +209,7 @@ class UserDataView(viewsets.ModelViewSet):
         user_count = TaskUser.objects.using('default').filter(is_active=True).count()
         task_count = Task.objects.using('default').all().count()
         task_assigment = TaskAssignUser.objects.using('default').filter(active=True).count()
-        labels = ["User", "Task", "Task Assignment"]
+        labels = ["User", "Task", "Assignment"]
         default_data = [user_count, task_count, task_assigment]
         context = {
             'labels': labels,

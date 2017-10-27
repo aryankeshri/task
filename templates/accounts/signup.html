@@ -1,113 +1,68 @@
 {% extends "base.html" %}
 {% block content %}
-    <style>
-body {font-family: "Lato", sans-serif;}
-
-/* Style the tab */
-div.tab {
-    overflow: hidden;
-    border: 1px solid #ccc;
-    background-color: #f1f1f1;
-}
-
-/* Style the buttons inside the tab */
-div.tab button {
-    background-color: inherit;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    transition: 0.3s;
-    font-size: 17px;
-}
-
-/* Change background color of buttons on hover */
-div.tab button:hover {
-    background-color: #ddd;
-}
-
-/* Create an active/current tablink class */
-div.tab button.active {
-    background-color: #ccc;
-}
-
-/* Style the tab content */
-.tabcontent {
-    display: none;
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-top: none;
-}
-</style>
-<td style="padding: 55px 70px;" xmlns="http://www.w3.org/1999/html">
-    <div class="tab">
-      <button class="tablinks" onclick="openCity(event, 'Admin')">Admin</button>
-      <button class="tablinks" onclick="openCity(event, 'Teacher')">Teacher</button>
-      <button class="tablinks" onclick="openCity(event, 'Student')">Student</button>
-    </div>
-
-    <div id="Admin" class="tabcontent">
-        <form class="modal-content animate" >
-            <div class="container">
-                <label><b>Full Name</b></label>
-                <input type="text" placeholder="Full name" name="fullname" required>
-
-                <label><b>Email</b></label>
-                <input type="text" placeholder="xyz@example.com" name="email" required>
-
-                <label><b>Password</b></label>
-                <input type="password" placeholder="Password" name="psw" required>
-                <button type="submit">SignUp</button>
+<div class="signup">
+    <div class="container">
+        <div class="header">
+            <h3>Register</h3>
+        </div>
+        <form action="" method="post" id="signup-form" >{% csrf_token %}
+            <div class="btn-group clearfix" >
+                <button type="button" onclick="setValue(1)" class="btn btn-default my-btn" value="Admin">
+                    Admin
+                </button>
+                <button type="button" onclick="setValue(2)" class="btn btn-default my-btn" value="Teacher">
+                    Teacher
+                </button>
+                <button type="button" onclick="setValue(3)" class="btn btn-default my-btn" value="Student">
+                    Student
+                </button>
+                <input type="hidden" id="id_type" name="Admin">
+            </div>
+            <div>
+                <div class="form-row">
+                    <label class="required" for="id_fullname">Full Name:</label>
+                    <input class="form-input" id="id_fullname" placeholder="Xyz Pqr" maxlength="254" name="fullname" type="text" />
+                </div>
+                <div class="form-row">
+                    <label class="required" for="id_email">Email:</label>
+                    <input class="form-input" id="id_email" placeholder="xyz@example.com" maxlength="254" name="email" type="text" />
+                </div>
+                <div class="form-row">
+                    <label class="required" for="id_password">Password:</label>
+                    <input class="form-input" id="id_password" name="password" type="password" />
+                </div>
+                <div class="submit-row">
+                    <label>&nbsp;</label>
+                    <input class="btn btn-success" type="submit" value="Register" />
+                </div>
             </div>
         </form>
     </div>
-
-    <div id="Teacher" class="tabcontent">
-        <form class="modal-content animate" >
-            <div class="container">
-                <label><b>Full Name</b></label>
-                <input type="text" placeholder="Full name" name="fullname" required>
-
-                <label><b>Email</b></label>
-                <input type="text" placeholder="xyz@example.com" name="email" required>
-
-                <label><b>Password</b></label>
-                <input type="password" placeholder="Password" name="psw" required>
-                <button type="submit">SignUp</button>
-            </div>
-        </form>
-    </div>
-
-    <div id="Student" class="tabcontent">
-        <form class="modal-content animate" >
-            <div class="container">
-                <label><b>Full Name</b></label>
-                <input type="text" placeholder="Full name" name="fullname" required>
-
-                <label><b>Email</b></label>
-                <input type="text" placeholder="xyz@example.com" name="email" required>
-
-                <label><b>Password</b></label>
-                <input type="password" placeholder="Password" name="psw" required>
-                <button type="submit">SignUp</button>
-            </div>
-        </form>
-    </div>
-</td>
-<script>
-function openCity(evt, cityName) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
+</div>
+<script type="text/javascript">
+    function setValue(data) {
+        document.getElementById("id_type").value = data;
     }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    document.getElementById(cityName).style.display = "block";
-    evt.currentTarget.className += " active";
-}
+    $('.my-btn').click(function () {
+        $('.my-btn').removeClass('active');
+        $(this).addClass('active');
+    });
+    $(document).on('submit', '#signup-form', function(e){
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '/account/api/signup/',
+            data: {
+                full_name: $('#id_fullname').val(),
+                email: $('#id_email').val(),
+                password: $('#id_password').val(),
+                role: $('#id_type').val(),
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+            },
+            success: function(){
+                alert('login successfuly');
+            }
+        });
+    });
 </script>
 {% endblock content %}
