@@ -16,12 +16,12 @@
                 <button type="button" onclick="setValue(3)" class="btn btn-default my-btn" value="Student">
                     Student
                 </button>
-                <input type="hidden" id="id_type" name="Admin">
+                <input type="hidden" id="id_type" />
             </div>
             <div>
                 <div class="form-row">
                     <label class="required" for="id_fullname">Full Name:</label>
-                    <input class="form-input" id="id_fullname" placeholder="Xyz Pqr" maxlength="254" name="fullname" type="text" />
+                    <input class="form-input" id="id_fullname" placeholder="John Tez" maxlength="254" name="fullname" type="text" />
                 </div>
                 <div class="form-row">
                     <label class="required" for="id_email">Email:</label>
@@ -51,7 +51,7 @@
         e.preventDefault();
         $.ajax({
             type: 'POST',
-            url: '/account/api/signup/',
+            url: '/account/signup/',
             data: {
                 full_name: $('#id_fullname').val(),
                 email: $('#id_email').val(),
@@ -59,8 +59,19 @@
                 role: $('#id_type').val(),
                 csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
             },
-            success: function(){
-                alert('login successfuly');
+            success: function(response){
+                if(localStorage) {
+                    localStorage.setItem("token", response["token"]);
+                    localStorage.setItem("email", response["user"]["email"]);
+                    localStorage.setItem("short_name", response["user"]["short_name"]);
+                    localStorage.setItem("id", response["user"]["id"]);
+                    window.location.href = "/assignment/task/dashboard/";
+                } else {
+                    alert("Sorry, your browser do not support local storage.");
+                }
+            },
+            error: function(error_data){
+                console.log("error")
             }
         });
     });

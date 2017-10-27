@@ -29,14 +29,25 @@
         e.preventDefault();
         $.ajax({
             type: 'POST',
-            url: '/account/api/login/',
+            url: '/account/login/',
             data: {
                 email: $('#id_username').val(),
                 password: $('#id_password').val(),
                 csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
             },
-            success: function(){
-                alert('login successfuly');
+            success: function(response){
+                if(localStorage) {
+                    localStorage.setItem("token", response["token"]);
+                    localStorage.setItem("email", response["user"]["email"]);
+                    localStorage.setItem("short_name", response["user"]["short_name"]);
+                    localStorage.setItem("id", response["user"]["id"]);
+                    window.location.href = "/assignment/task/dashboard/";
+                } else {
+                    alert("Sorry, your browser do not support local storage.");
+                }
+            },
+            error: function(error_data){
+                console.log("error")
             }
         });
     });
