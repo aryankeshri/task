@@ -23,6 +23,10 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^account/', include('account.urls')),
     url(r'^assignment/', include('assignments.urls')),
+    url(r'^$', TemplateView.as_view(template_name="index.html"), name='home'),
     url(r'^signup/$', TemplateView.as_view(template_name="signup.html")),
     url(r'^login/$', TemplateView.as_view(template_name="login.html")),
+    url(r'^forget/password/$',
+        TemplateView.as_view(template_name="forget_password.html"),
+        name='forget_password'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

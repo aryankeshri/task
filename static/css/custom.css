@@ -1,5 +1,12 @@
+.task-body {
+    background-color: #75dfff;
+    background-image: url('https://static1.squarespace.com/static/57a6a44d2994ca6cbb9460b6/t/587c83f786e6c0d1e313ac5e/1484555338640/col2.jpg?format=2500w');
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
 .login {
-    margin-top: 150px;
+    margin-top: 92px;
     margin-bottom: 200px;
     border-color: black;
 }
@@ -8,17 +15,29 @@
     background: #fff;
     border: 1px solid #eaeaea;
     border-radius: 4px;
-    width: 400px;
-    padding-top: 10px;
+    width: 350px;
+    padding: 40px;
     padding-bottom: 50px;
-    padding-left: 50px;
-    padding-right: 50px;
+    box-shadow: 0 0 70px 3px rgba(0,0,0,0.2);
 }
 
 .header{
     text-align: center;
     padding-bottom: 20px;
-    color: darkgray;
+    color: #3c3636;
+}
+
+label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: 100;
+    color: rgba(41, 35, 35, 0.89);
+}
+
+h3 {
+    font-size: 24px;
+    margin: 0;
 }
 
 .form-row {
@@ -36,6 +55,15 @@
     margin-top: 20px;
 }
 
+.btn {
+    width: 100%;
+}
+
+.forget-row {
+    text-align: left;
+    padding-top: 20px;
+}
+
 .signup {
     margin-top: 150px;
     margin-bottom: 200px;
@@ -50,7 +78,22 @@
 .signup .btn-group .btn {
     width: 33.33%;
 }
+
 .my-btn.active, .my-btn.active:focus{
     background: #DCD3D1;
     /*color: #18E58B;*/
+}
+
+.topnav {
+    position: fixed;
+    top: 0;
+    border: 20px;
+    width: 100%;
+    background-color: rgb(168, 170, 183);
+    height: 44px;
+}
+
+.navbar-default {
+    background-color: rgba(199, 113, 113, 0.56);
+    border-color: #e7e7e7;
 }
