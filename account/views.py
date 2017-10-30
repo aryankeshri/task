@@ -226,6 +226,7 @@ class Logout(views.APIView):
         """
         user = has_permission(request)
         user.last_login = timezone.now()
+        user.token = ''
         user.save()
         context = {
          'message': 'successfully logout!!'

@@ -23,8 +23,20 @@
         {% endblock content %}
         <script>
             function refreshPage(){
-                localStorage.clear();
-                window.location.href = "/";
+                $.ajax({
+                    method: "GET",
+                    url: 'account/logout/',
+                    headers: {
+                        'Authorization': localStorage.getItem("token")
+                    },
+                    success: function(){
+                        localStorage.clear();
+                        window.location.href = "/";
+                    },
+                    error: function(error_data){
+                        console.log("error")
+                    }
+                });
             }
             function UserCheck() {
                 if(localStorage) {
@@ -34,7 +46,7 @@
                         htmlcontent = " <li class=\"button-li\"><button class=\"btn btn-primary\" type=\"submit\" value=\"Sign Up\"> <a href=\"{% url 'signup' %}\">SignUp</a></button></li> <li class=\"button-li\"> <button class=\"btn btn-primary\" type=\"submit\" value=\"Log In\"> <a href=\"{% url 'login' %}\">LogIn</a> </button> </li> ";
                         return htmlcontent;
                     } else {
-                        htmlcontent = " <li class=\"button-li\"><button class=\"btn btn-primary\" type=\"submit\" value=\"Change password\"> <a href=\"{% url 'change_password' %}\">Change Password</a></button></li> <li class=\"button-li\"><button class=\"btn btn-primary\" type=\"submit\" value=\"Logout\" onClick=\"refreshPage()\">Logout</button></li> ";
+                        htmlcontent = " <li class=\"button-li\"><button class=\"btn btn-primary\" type=\"submit\" value=\"Change password\"> <a href=\"{% url 'change_password' %}\">Change Password</a></button></li> <li class=\"button-li\"><button class=\"btn btn-primary\" type=\"submit\" id=\"logout\" value=\"Logout\" onClick=\"refreshPage()\">Logout</button></li> ";
                         return htmlcontent;
                     }
                 } else {
