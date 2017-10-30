@@ -96,4 +96,37 @@ h3 {
 .navbar-default {
     background-color: rgba(199, 113, 113, 0.56);
     border-color: #e7e7e7;
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.navbar-nav {
+    float: right;
+    margin: 5px;
+    margin-left: 0;
+    margin-right: 4px;
+}
+
+.btn a {
+    color: #eef2f3;
+}
+
+.container-fluid {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 0;
+}
+
+.navbar-logo{
+    float: left;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.navbar-logo a {
+    color: #eef2f3;
+}
+
+.button-li{
+    margin: 3px;
 }

@@ -54,6 +54,7 @@ class TaskUser(models.Model):
     email_verifed = models.BooleanField(default=False)
     email_verify_date = models.DateTimeField(null=True, blank=True)
     role = models.IntegerField(choices=ROLE_TYPE, default=3)
+    token = models.TextField(blank=True)
     is_active = models.BooleanField(_('active'), default=True)
     blocked = models.BooleanField(_('blocked'), default=False)
     created = models.DateTimeField(_('date of joining'), auto_now_add=True)

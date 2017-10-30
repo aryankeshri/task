@@ -5,13 +5,43 @@
     </head>
 
     <body class="task-body">
-        <div class="navbar navbar-default" id="topnav">
-          <div class="container-fluid">
-              <a class="navbar-brand" href="{% url 'home' %}">WebTask</a>
-          </div>
+        <div class="navbar-collapse collapse navbar navbar-default" id="topnav">
+            <div class="container-fluid">
+                <ul class="navbar-logo" style="margin-bottom: 0;">
+                    <li class="button-li">
+                        <a href="{% url 'home' %}">
+                            <img src="https://img.ogol.io/appiness.be.png" width="45px">
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav" id="check">
+                </ul>
+            </div>
         </div>
         {% block content %}
 
         {% endblock content %}
+        <script>
+            function refreshPage(){
+                localStorage.clear();
+                window.location.href = "/";
+            }
+            function UserCheck() {
+                if(localStorage) {
+                    var a = localStorage.getItem("token");
+                    htmlcontent = '';
+                    if (a === null){
+                        htmlcontent = " <li class=\"button-li\"><button class=\"btn btn-primary\" type=\"submit\" value=\"Sign Up\"> <a href=\"{% url 'signup' %}\">SignUp</a></button></li> <li class=\"button-li\"> <button class=\"btn btn-primary\" type=\"submit\" value=\"Log In\"> <a href=\"{% url 'login' %}\">LogIn</a> </button> </li> ";
+                        return htmlcontent;
+                    } else {
+                        htmlcontent = " <li class=\"button-li\"><button class=\"btn btn-primary\" type=\"submit\" value=\"Change password\"> <a href=\"{% url 'change_password' %}\">Change Password</a></button></li> <li class=\"button-li\"><button class=\"btn btn-primary\" type=\"submit\" value=\"Logout\" onClick=\"refreshPage()\">Logout</button></li> ";
+                        return htmlcontent;
+                    }
+                } else {
+                    alert("Sorry, your browser do not support local storage.");
+                }
+            }
+            document.getElementById("check").innerHTML = UserCheck();
+        </script>
     </body>
 </html>

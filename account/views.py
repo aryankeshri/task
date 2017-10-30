@@ -18,7 +18,7 @@ from account.serializers import UserResponseSerializer
 from assignments.models import Task
 from core.api_permissions import has_permission
 from core.authentication import is_authenticate
-from core.encryption import jwt_payload_handler, jwt_encode_handler
+from core.encryption import crypto_encode
 
 
 class SignUpView(viewsets.ModelViewSet):
@@ -66,9 +66,10 @@ class SignUpView(viewsets.ModelViewSet):
         user = TaskUser.objects.create_user(email=email,
                                             password=password,
                                             **extra_fields)
-        payload = jwt_payload_handler(user)
+        # payload = jwt_payload_handler(user)
+        user = is_authenticate(user.email, user.password)
         content = {
-            'token': jwt_encode_handler(payload),
+            'token': user.token,
             'user': UserResponseSerializer(user, context={'request': request}).data
         }
         return Response(content, status=status.HTTP_200_OK)
@@ -100,9 +101,8 @@ class Login(viewsets.ModelViewSet):
             if not user.is_active:
                 msg = _('User account is disabled.')
                 raise serializers.ValidationError(msg)
-            payload = jwt_payload_handler(user)
             content = {
-                'token': jwt_encode_handler(payload),
+                'token': user.token,
                 'user': UserResponseSerializer(user, context={'request': request}).data
             }
             return Response(content, status=status.HTTP_200_OK)
@@ -132,9 +132,10 @@ class ChangePasswordView(viewsets.ModelViewSet):
             validate = self.check_old_password(user, old_password)
             if validate:
                 user.set_password(new_password)
+                user.token = crypto_encode(user.id)
                 user.save()
                 content = {
-                    'token': jwt_encode_handler(jwt_payload_handler(user)),
+                    'token': user.token,
                     'message': _("New password has been saved.")
                 }
                 return Response(content, status=status.HTTP_200_OK)
@@ -230,6 +231,22 @@ class Logout(views.APIView):
          'message': 'successfully logout!!'
         }
         return Response(context, status=status.HTTP_200_OK)
+
+
+class GetUserDetails(views.APIView):
+
+    def get(self, request):
+        """
+        Its store logout time of user
+        :param request: header(token)
+        :return: message
+        """
+        user = has_permission(request)
+        content = {
+            'token': user.token,
+            'user': UserResponseSerializer(user, context={'request': request}).data
+        }
+        return Response(content, status=status.HTTP_200_OK)
 
 
 def html_test(request):

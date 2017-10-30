@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^forget/password/done/$', ResetPasswordView.as_view({'post': 'reset_done'})),
     url(r'^logout/$', Logout.as_view()),
     url(r'^test/$', html_test),
+    url(r'^user/details/$', GetUserDetails.as_view()),
     ]

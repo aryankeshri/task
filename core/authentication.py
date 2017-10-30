@@ -1,6 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 
 from account.models import TaskUser
+from core.encryption import crypto_encode
 
 
 def is_authenticate(username, password):
@@ -15,6 +16,8 @@ def is_authenticate(username, password):
     try:
         user = TaskUser.objects.get(email__iexact=username)
         if user.check_password(password):
+            user.token = crypto_encode(user.id)
+            user.save()
             return user
     except ObjectDoesNotExist:
         pass
