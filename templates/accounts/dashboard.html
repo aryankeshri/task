@@ -1,5 +1,46 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-    <h1>Hello</h1>
+    <div>
+        <div class="">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Column 1</th>
+                        <th>Column 2</th>
+                        <th>etc</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr scope="row">
+                        <td>Row 1 Data 1</td>
+                        <td>Row 1 Data 2</td>
+                        <td>etc</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+
+        </div>
+    </div>
+    <script type="text/javascript">
+        $.ajax({
+            method: 'GET',
+            url: '/assignment/api/task/dashboard/',
+            headers: {
+                'Authorization': localStorage.getItem("token")
+            },
+            success: function(response){
+                if (response['user_type'] === 1) {
+
+                }else {
+                    console.log(response['user_type'])
+                }
+            },
+            error: function(error_data){
+                console.log("error")
+            }
+        });
+    </script>
 {% endblock content %}

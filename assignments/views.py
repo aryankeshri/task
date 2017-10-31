@@ -161,7 +161,8 @@ class TaskView(viewsets.ModelViewSet):
                 }
                 for i in task_obj
                 ]
-        return Response({'data': response_serializer, }, status=status.HTTP_200_OK)
+        return Response({'data': response_serializer, 'user_type': user_perm.role},
+                        status=status.HTTP_200_OK)
 
     def task_delete(self, request, pk=None):
         user_perm = has_permission(request)
