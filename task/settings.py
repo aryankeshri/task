@@ -85,12 +85,20 @@ WSGI_APPLICATION = 'task.wsgi.application'
 # DATABASE_ROUTERS = ['task.db_router.PrimaryReplicaRouter']
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': 'd5m6a1anl85sh1',
+    #     'USER': 'iawnvyjcjgodfn',
+    #     'PASSWORD': '7487de0886608bda34fcbc301a86fdc7ebc82aadcfef5e2b38deb03e4a46f901',
+    #     'HOST': 'ec2-23-21-80-230.compute-1.amazonaws.com',
+    #     'PORT': '5432',
+    # },
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd5m6a1anl85sh1',
-        'USER': 'iawnvyjcjgodfn',
-        'PASSWORD': '7487de0886608bda34fcbc301a86fdc7ebc82aadcfef5e2b38deb03e4a46f901',
-        'HOST': 'ec2-23-21-80-230.compute-1.amazonaws.com',
+        'NAME': 'testdb',
+        'USER': 'appiness',
+        'PASSWORD': 'appiness',
+        'HOST': 'localhost',
         'PORT': '5432',
     },
 }
@@ -149,6 +157,7 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.FileUploadParser',
     ),
     'UPLOADED_FILES_USE_URL': True,
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 }
 
 

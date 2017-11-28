@@ -41,10 +41,7 @@ class SignUpView(viewsets.ModelViewSet):
             }
         }
         """
-        if ('email', 'password', 'full_name', 'role') not in request.data:
-            return Response({'message': 'Data missing :-('},
-                            status=status.HTTP_417_EXPECTATION_FAILED)
-        email = request.data['email'].lower()
+        email = request.data['email']
         check = TaskUser.objects.filter(email__iexact=email).exists()
         if check:
             content = {
@@ -70,12 +67,12 @@ class SignUpView(viewsets.ModelViewSet):
                                             password=password,
                                             **extra_fields)
         # payload = jwt_payload_handler(user)
-        user = is_authenticate(user.email, user.password)
+        user = is_authenticate(user.email, request.data['password'])
         content = {
             'token': user.token,
             'user': UserResponseSerializer(user, context={'request': request}).data
         }
-        return Response(content, status=status.HTTP_200_OK)
+        return Response(content, status=status.HTTP_201_CREATED)
 
 
 class Login(viewsets.ModelViewSet):
@@ -97,9 +94,6 @@ class Login(viewsets.ModelViewSet):
             }
         }
         """
-        if ('email', 'password') not in request.data:
-            return Response({'message': 'Data missing :-('},
-                            status=status.HTTP_417_EXPECTATION_FAILED)
         username = request.data['email']
         password = request.data['password']
         user = is_authenticate(username, password)
@@ -131,9 +125,6 @@ class ChangePasswordView(viewsets.ModelViewSet):
         :param request: old_password, new_password
         :return: new_token = token, message
         """
-        if ('old_password', 'new_password') not in request.data:
-            return Response({'message': 'Data missing :-('},
-                            status=status.HTTP_417_EXPECTATION_FAILED)
         user = has_permission(request)
         old_password = request.data['old_password']
         new_password = request.data['new_password']
@@ -165,9 +156,6 @@ class ResetPasswordView(viewsets.ModelViewSet):
         :param request: email
         :return: message
         """
-        if 'email' not in request.data:
-            return Response({'message': 'Data missing :-('},
-                            status=status.HTTP_417_EXPECTATION_FAILED)
         email = request.data['email']
         try:
             user = TaskUser.objects.get(email__iexact=email)
@@ -199,9 +187,6 @@ class ResetPasswordView(viewsets.ModelViewSet):
         :param request: uid, token, new_password
         :return: message
         """
-        if ('uid', 'token', 'new_password') not in request.data:
-            return Response({'message': 'Data missing :-('},
-                            status=status.HTTP_417_EXPECTATION_FAILED)
         uid = request.data['uid']
         token = request.data['token']
         password = request.data['new_password']
